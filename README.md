@@ -5,7 +5,7 @@
 ---
 
 ## 🌐 Live Demo
-
+https://smartseason-monitoring.vercel.app/
 
 ## Table of Contents
 
@@ -132,8 +132,8 @@ All metrics are computed server-side in a dedicated `DashboardService` to keep v
 **1. Clone and navigate**
 
 ```bash
-git clone https://github.com/your-username/smartseason.git
-cd smartseason/Backend
+git clone https://github.com/mutungapeter/smartseason-monitoring.git
+cd smartseason-monitoring/Backend
 ```
 
 **2. Create and activate a virtual environment**
@@ -198,7 +198,7 @@ Interactive API docs:
 **1. Navigate to the frontend directory**
 
 ```bash
-cd smartseason/frontend
+cd smartseason-monitoring/frontend
 ```
 
 **2. Install dependencies**
