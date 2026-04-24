@@ -1,30 +1,30 @@
-import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import Modal from '@/components/shared/Modal'
-import toast from 'react-hot-toast'
-import { STAGES } from '@/constants'
-import { useUpdateField } from '@/services/fields/useFields'
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import Modal from "@/components/shared/Modal";
+import toast from "react-hot-toast";
+import { STAGES } from "@/constants";
+import { useUpdateField } from "@/services/fields/useFields";
 
 const schema = z.object({
   name: z.string().min(1).max(255),
   crop_type: z.string().min(1).max(255),
   planting_date: z.string().min(1),
-  current_stage: z.enum(['PLANTED', 'GROWING', 'READY', 'HARVESTED']),
+  current_stage: z.enum(["PLANTED", "GROWING", "READY", "HARVESTED"]),
   threshold_days: z
-    .union([z.coerce.number().int().min(0), z.literal('')])
+    .union([z.coerce.number().int().min(0), z.literal("")])
     .optional()
     .nullable(),
-})
+});
 
 const inputClass = (error) =>
   `w-full px-4 py-2.5 rounded-lg border text-sm focus:outline-none focus:border-primary-600 ${
-    error ? 'border-danger' : 'border-gray-200'
-  }`
+    error ? "border-danger" : "border-gray-200"
+  }`;
 
 function UpdateField({ open, onClose, field }) {
-  const { mutateAsync, isPending } = useUpdateField()
+  const { mutateAsync, isPending } = useUpdateField();
 
   const {
     register,
@@ -34,13 +34,13 @@ function UpdateField({ open, onClose, field }) {
   } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: '',
-      crop_type: '',
-      planting_date: '',
-      current_stage: 'PLANTED',
-      threshold_days: '',
+      name: "",
+      crop_type: "",
+      planting_date: "",
+      current_stage: "PLANTED",
+      threshold_days: "",
     },
-  })
+  });
 
   useEffect(() => {
     if (field) {
@@ -49,32 +49,32 @@ function UpdateField({ open, onClose, field }) {
         crop_type: field.crop_type,
         planting_date: field.planting_date,
         current_stage: field.current_stage,
-        threshold_days: field.threshold_days ?? '',
-      })
+        threshold_days: field.threshold_days ?? "",
+      });
     }
-  }, [field, reset])
+  }, [field, reset]);
 
   const handleClose = () => {
-    reset()
-    onClose()
-  }
+    reset();
+    onClose();
+  };
 
   const onSubmit = async (data) => {
     try {
       const payload = {
         ...data,
         threshold_days:
-          data.threshold_days === '' ? null : Number(data.threshold_days),
-      }
+          data.threshold_days === "" ? null : Number(data.threshold_days),
+      };
 
-      await mutateAsync({ id: field.id, data: payload })
+      await mutateAsync({ id: field.id, data: payload });
 
-      toast.success('Field updated successfully')
-      handleClose()
+      toast.success("Field updated successfully");
+      handleClose();
     } catch (err) {
-      toast.error('Failed to update field')
+      toast.error("Failed to update field");
     }
-  }
+  };
 
   return (
     <Modal
@@ -97,31 +97,34 @@ function UpdateField({ open, onClose, field }) {
             disabled={isPending}
             className="px-4 py-2 text-sm text-white bg-primary-600 rounded-lg hover:bg-primary-dark"
           >
-            {isPending ? 'Updating...' : 'Update Field'}
+            {isPending ? "Updating..." : "Update Field"}
           </button>
         </>
       }
     >
       <form className="space-y-4">
-
         {/* Name */}
-        <div>
+        <div className="space-y-1">
+          <label className="block text-sm font-medium text-gray-700">
+            Field Name
+          </label>
           <input
-            {...register('name')}
+            {...register("name")}
             placeholder="Field name"
             className={inputClass(errors.name)}
           />
           {errors.name && (
-            <p className="text-xs text-danger mt-1">
-              {errors.name.message}
-            </p>
+            <p className="text-xs text-danger mt-1">{errors.name.message}</p>
           )}
         </div>
 
         {/* Crop type */}
-        <div>
+        <div className="space-y-1">
+          <label className="block text-sm font-medium text-gray-700">
+            Crop Type
+          </label>
           <input
-            {...register('crop_type')}
+            {...register("crop_type")}
             placeholder="Crop type"
             className={inputClass(errors.crop_type)}
           />
@@ -134,11 +137,13 @@ function UpdateField({ open, onClose, field }) {
 
         {/* Grid fields */}
         <div className="grid grid-cols-2 gap-4">
-
-          <div>
+          <div className="space-y-1">
+            <label className="block text-sm font-medium text-gray-700">
+              Planting Date
+            </label>
             <input
               type="date"
-              {...register('planting_date')}
+              {...register("planting_date")}
               className={inputClass(errors.planting_date)}
             />
             {errors.planting_date && (
@@ -148,9 +153,12 @@ function UpdateField({ open, onClose, field }) {
             )}
           </div>
 
-          <div>
+          <div className="space-y-1">
+            <label className="block text-sm font-medium text-gray-700">
+              Current Stage
+            </label>
             <select
-              {...register('current_stage')}
+              {...register("current_stage")}
               className={inputClass(errors.current_stage)}
             >
               {STAGES.map((s) => (
@@ -159,7 +167,6 @@ function UpdateField({ open, onClose, field }) {
                 </option>
               ))}
             </select>
-
             {errors.current_stage && (
               <p className="text-xs text-danger mt-1">
                 {errors.current_stage.message}
@@ -169,10 +176,13 @@ function UpdateField({ open, onClose, field }) {
         </div>
 
         {/* Threshold */}
-        <div>
+        <div className="space-y-1">
+          <label className="block text-sm font-medium text-gray-700">
+            Threshold Days
+          </label>
           <input
             type="number"
-            {...register('threshold_days')}
+            {...register("threshold_days")}
             placeholder="Threshold days"
             className={inputClass(errors.threshold_days)}
           />
@@ -182,10 +192,9 @@ function UpdateField({ open, onClose, field }) {
             </p>
           )}
         </div>
-
       </form>
     </Modal>
-  )
+  );
 }
 
-export default UpdateField
+export default UpdateField;

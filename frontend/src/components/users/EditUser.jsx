@@ -96,63 +96,69 @@ export default function EditUser({ open, onClose, user }) {
       }
     >
       <form className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <input
-              {...register('first_name')}
-              placeholder="First name"
-              className={inputClass(errors.first_name)}
-            />
-          </div>
-          <div>
-            <input
-              {...register('last_name')}
-              placeholder="Last name"
-              className={inputClass(errors.last_name)}
-            />
-          </div>
-        </div>
+  <div className="grid grid-cols-2 gap-4">
+    <div className="space-y-1">
+      <label className="block text-sm font-medium text-gray-700">First Name</label>
+      <input
+        {...register('first_name')}
+        placeholder="First name"
+        className={inputClass(errors.first_name)}
+      />
+    </div>
+    <div className="space-y-1">
+      <label className="block text-sm font-medium text-gray-700">Last Name</label>
+      <input
+        {...register('last_name')}
+        placeholder="Last name"
+        className={inputClass(errors.last_name)}
+      />
+    </div>
+  </div>
 
-        <div>
-          <input
-            {...register('email')}
-            type="email"
-            placeholder="Email address"
-            className={inputClass(errors.email)}
-          />
-          {errors.email && (
-            <p className="text-xs text-danger mt-1">{errors.email.message}</p>
-          )}
-        </div>
+  <div className="space-y-1">
+    <label className="block text-sm font-medium text-gray-700">Email Address</label>
+    <input
+      {...register('email')}
+      type="email"
+      placeholder="Email address"
+      className={inputClass(errors.email)}
+    />
+    {errors.email && (
+      <p className="text-xs text-danger mt-1">{errors.email.message}</p>
+    )}
+  </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <input
-              {...register('phone_number')}
-              placeholder="Phone number (optional)"
-              className={inputClass(errors.phone_number)}
-            />
-          </div>
-          <div>
-            <select {...register('role')} className={inputClass(errors.role)}>
-              <option value="AGENT">Agent</option>
-              <option value="ADMIN">Admin</option>
-            </select>
-          </div>
-        </div>
+  <div className="grid grid-cols-2 gap-4">
+    <div className="space-y-1">
+      <label className="block text-sm font-medium text-gray-700">Phone Number</label>
+      <input
+        {...register('phone_number')}
+        placeholder="Phone number (optional)"
+        className={inputClass(errors.phone_number)}
+      />
+    </div>
+    <div className="space-y-1">
+      <label className="block text-sm font-medium text-gray-700">Role</label>
+      <select {...register('role')} className={inputClass(errors.role)}>
+        <option value="AGENT">Agent</option>
+        <option value="ADMIN">Admin</option>
+      </select>
+    </div>
+  </div>
 
-        <div>
-          <input
-            {...register('password')}
-            type="password"
-            placeholder="New password (leave blank to keep current)"
-            className={inputClass(errors.password)}
-          />
-          {errors.password && (
-            <p className="text-xs text-danger mt-1">{errors.password.message}</p>
-          )}
-        </div>
-      </form>
+  <div className="space-y-1">
+    <label className="block text-sm font-medium text-gray-700">Password</label>
+    <input
+      {...register('password')}
+      type="password"
+      placeholder="New password (leave blank to keep current)"
+      className={inputClass(errors.password)}
+    />
+    {errors.password && (
+      <p className="text-xs text-danger mt-1">{errors.password.message}</p>
+    )}
+  </div>
+</form>
     </Modal>
   )
 }
