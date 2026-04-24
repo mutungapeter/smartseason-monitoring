@@ -6,13 +6,14 @@ import { z } from 'zod'
 import {
   setCredentials,
   setLoading,
-  // setError,
+
   selectIsLoading,
-  // selectError,
+
 } from '@/store/slices/authSlice'
 import { login } from '@/services/auth'
 import toast from 'react-hot-toast'
-
+import { Eye, EyeOff } from 'lucide-react'
+import { useState } from 'react'
 
 const loginSchema = z.object({
   email: z
@@ -29,7 +30,7 @@ function LoginPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const isLoading = useSelector(selectIsLoading)
-  // const error = useSelector(selectError)
+ const [showPassword, setShowPassword] = useState(false)
 
   const {
     register,
@@ -53,7 +54,7 @@ const onSubmit = async (data) => {
     navigate('/dashboard')
   } catch (err) {
     const message = err.response?.data?.detail || 'Invalid email or password.'
-    // dispatch(setError(message))
+
     toast.error(message)
   } finally {
     dispatch(setLoading(false))
@@ -67,12 +68,7 @@ const onSubmit = async (data) => {
           SmartSeason Login
         </h1>
 
-        {/* {error && (
-          <div className="mb-4 p-3 rounded-lg bg-danger-50 text-danger-600 text-sm font-inter">
-            {error}
-          </div>
-        )} */}
-
+       
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label className="block text-sm font-inter font-medium text-gray-700 mb-1">
@@ -93,23 +89,36 @@ const onSubmit = async (data) => {
             )}
           </div>
 
-          <div>
-            <label className="block text-sm font-inter font-medium text-gray-700 mb-1">
-              Password
-            </label>
-            <input
-              type="password"
-              {...register('password')}
-              className={`w-full px-4 py-2.5 rounded-lg border font-inter text-sm focus:outline-none focus:ring-none focus:border-primary-600 
-                ${errors.password ? 'border-danger' : 'border-gray-200'}`}
-              placeholder="******"
-            />
-            {errors.password && (
-              <p className="mt-1 text-xs text-danger font-inter">
-                {errors.password.message}
-              </p>
-            )}
-          </div>
+         <div>
+  <label className="block text-sm font-inter font-medium text-gray-700 mb-1">
+    Password
+  </label>
+  <div className="relative">
+    <input
+      type={showPassword ? 'text' : 'password'}
+      {...register('password')}
+      className={`w-full px-4 py-2.5 rounded-lg border font-inter text-sm focus:outline-none focus:ring-none focus:border-primary-600 
+        ${errors.password ? 'border-danger' : 'border-gray-200'}`}
+      placeholder="******"
+    />
+    <button
+      type="button"
+      onClick={() => setShowPassword((prev) => !prev)}
+      className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-600"
+    >
+      {showPassword ? (
+        <EyeOff size={16} />
+      ) : (
+        <Eye size={16} />
+      )}
+    </button>
+  </div>
+  {errors.password && (
+    <p className="mt-1 text-xs text-danger font-inter">
+      {errors.password.message}
+    </p>
+  )}
+</div>
 
           <button
             type="submit"
